@@ -6,11 +6,11 @@
 //
 import SwiftUI
 struct MainTabView: View {
+    @EnvironmentObject var locationManager: LocationManager
     init() {
         // تخصيص شكل الـ TabBar في الـ Dark Mode
         UITabBar.appearance().backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
     }
-
     var body: some View {
         TabView {
             NavigationStack {
@@ -27,6 +27,8 @@ struct MainTabView: View {
                 Label("Saved", systemImage: "bookmark.fill")
             }
         }
+        .environmentObject(locationManager) // تمريره لشاشة البحث
+
         .tint(.blue) // لون الأيقونات النشطة
     }
 }
