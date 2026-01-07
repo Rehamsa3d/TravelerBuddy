@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SplashView: View {
-    @EnvironmentObject var appState: AppStateManager // الوصول لمدير الحالة
+    @EnvironmentObject var appState: AppStateManager
     @State private var size = 0.8
     @State private var opacity = 0.5
     
@@ -25,13 +25,11 @@ struct SplashView: View {
         .scaleEffect(size)
         .opacity(opacity)
         .onAppear {
-            // Animation اللوجو
             withAnimation(.easeIn(duration: 1.2)) {
                 self.size = 0.9
                 self.opacity = 1.0
             }
             
-            // الانتقال بعد ثانيتين
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 appState.switchState(to: .main)
             }

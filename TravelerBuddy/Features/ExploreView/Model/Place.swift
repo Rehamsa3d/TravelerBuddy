@@ -9,11 +9,13 @@
 import Foundation
 import CoreLocation
 
+
+
 struct Place: Identifiable {
     let id = UUID()
     let name: String
     let category: String
-    let imageName: String // هنستخدم أسماء من الـ SFSymbols مؤقتاً
+    let imageName: String 
     let coordinate: CLLocationCoordinate2D
         
     var address: String? = nil

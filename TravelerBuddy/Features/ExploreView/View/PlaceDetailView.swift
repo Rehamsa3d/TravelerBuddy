@@ -7,11 +7,16 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 import MapKit
 struct PlaceDetailView: View {
     let place: Place
-        
-    @EnvironmentObject var locationManager: LocationManager // الوصول للمدير
+    @Environment(\.modelContext) private var modelContext // الوصول للداتابيز
+    @Query var savedItems: [SavedPlace] // قراءة الأماكن المسيفة حالياً للتأكد
+
+    var isBookmarked: Bool {
+        savedItems.contains(where: { $0.name == place.name })
+    }
     var body: some View {
         VStack(spacing: 20) {
             // الجزء العلوي: أيقونة واسم المكان
@@ -61,13 +66,11 @@ struct PlaceDetailView: View {
                 
                 // زرار الحفظ (هنبرمجه لاحقاً)
                 // زرار الحفظ المطور
-                            Button(action: {
-                                locationManager.toggleFavorite(place: place)
-                            }) {
-                                Image(systemName: locationManager.isSaved(place: place) ? "bookmark.fill" : "bookmark")
+                            Button(action: toggleSave) {
+                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                    .foregroundColor(isBookmarked ? .blue : .primary)
                                     .padding()
                                     .background(Color.gray.opacity(0.2))
-                                    .foregroundColor(locationManager.isSaved(place: place) ? .blue : .primary)
                                     .cornerRadius(12)
                             }
                     
@@ -78,6 +81,28 @@ struct PlaceDetailView: View {
         .presentationDetents([.medium]) // الـ Sheet تطلع لنص الشاشة بس
         .presentationDragIndicator(.visible)
     }
+    
+    func toggleSave() {
+        if isBookmarked {
+            // حذف من الداتابيز
+            if let itemToDelete = savedItems.first(where: { $0.name == place.name }) {
+                modelContext.delete(itemToDelete)
+            }
+        } else {
+            // إضافة للداتابيز
+            let newItem = SavedPlace(
+                name: place.name,
+                category: place.category,
+                address: place.address,
+                latitude: place.coordinate.latitude,
+                longitude: place.coordinate.longitude
+            )
+            modelContext.insert(newItem)
+        }
+        
+    }
+        
+    
     
     func openInMaps() {
         let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: place.coordinate))

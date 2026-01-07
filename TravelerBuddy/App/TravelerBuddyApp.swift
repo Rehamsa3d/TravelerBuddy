@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct TravelerBuddyApp: App {
@@ -16,8 +17,10 @@ struct TravelerBuddyApp: App {
         WindowGroup {
             AppRootView()
                 .environmentObject(appState)
-                .environmentObject(locationManager) // حقنه هنا يجعله متاحاً لكل التطبيق
-                .preferredColorScheme(.dark) // السطر ده بيجبر التطبيق كله يبقى Dark Mode
+                .environmentObject(locationManager)
+            
+                .modelContainer(for: SavedPlace.self) //
+                .preferredColorScheme(.dark) //
         }
     }
 }

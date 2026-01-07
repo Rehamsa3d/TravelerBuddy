@@ -9,18 +9,18 @@ import Foundation
 import SwiftUI
 import MapKit
 struct ExploreView: View {
+    
     @EnvironmentObject var locationManager: LocationManager
     @State private var searchText = ""
-    @State private var offset: CGFloat = 600 // مكان القائمة السفلي
+    @State private var offset: CGFloat = 600
     @State private var selectedPlace: Place?
+    
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                // 1. الخريطة (الخلفية)
                 MapViewContainer(locationManager: locationManager, selectedPlace: $selectedPlace)
                     .ignoresSafeArea()
                 
-                // 2. شريط البحث (فوق الخريطة)
                 VStack {
                     HStack {
                         Image(systemName: "magnifyingglass")
@@ -39,7 +39,6 @@ struct ExploreView: View {
                     Spacer()
                 }
                 
-                // 3. القائمة السفلية (Bottom Sheet)
                 VStack(spacing: 0) {
                     Capsule()
                         .frame(width: 40, height: 6)
@@ -51,13 +50,12 @@ struct ExploreView: View {
                         .foregroundColor(.gray)
                         .padding(.top, 5)
 
-                    // القائمة التي تعرض النتائج الحقيقية
                     List(locationManager.mapPins) { place in
                         PlaceRowView(place: place)
                             .listRowBackground(Color.clear)
                             .onTapGesture {
                                 locationManager.goToPlace(place)
-                                withAnimation { offset = proxy.size.height - 200 } // تصغير القائمة عند الاختيار
+                                withAnimation { offset = proxy.size.height - 200 }
                             }
                     }
                     .listStyle(.plain)
@@ -77,9 +75,9 @@ struct ExploreView: View {
                         .onEnded { _ in
                             withAnimation(.spring()) {
                                 if offset < proxy.size.height / 2 {
-                                    offset = 150 // وضعية التوسيع
+                                    offset = 150
                                 } else {
-                                    offset = proxy.size.height - 200 // وضعية التصغير
+                                    offset = proxy.size.height - 200
                                 }
                             }
                         }
@@ -87,16 +85,15 @@ struct ExploreView: View {
               
             }  .sheet(item: $selectedPlace) { place in
                 PlaceDetailView(place: place)
-                    .environmentObject(locationManager) // السطر ده هو الحل!
+                    .environmentObject(locationManager)
             }
         }
     }
 }
 
-// الـ Container الخاص بالخريطة لتنظيم الكود
 struct MapViewContainer: View {
     @ObservedObject var locationManager: LocationManager
-    @Binding var selectedPlace: Place? // ربط مع الـ ExploreView
+    @Binding var selectedPlace: Place? // mapping to ExploreView
 
     var body: some View {
         Map(coordinateRegion: $locationManager.region,
@@ -106,7 +103,7 @@ struct MapViewContainer: View {
             MapAnnotation(coordinate: place.coordinate) {
                 AnnotationView(place: place)
                     .onTapGesture {
-                        self.selectedPlace = place // تحديث الحالة عند الضغط على الـ Pin
+                        self.selectedPlace = place
                     }
             }
         }
