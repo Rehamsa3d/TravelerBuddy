@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4D2D3D432F0F0F7200E3624B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4D2D3D422F0F0F5B00E3624B /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4D2D3C402F0DC5B300E3624B /* TravelerBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelerBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D2D3D422F0F0F5B00E3624B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,6 +50,7 @@
 		4D2D3C372F0DC5B300E3624B = {
 			isa = PBXGroup;
 			children = (
+				4D2D3D422F0F0F5B00E3624B /* README.md */,
 				4D2D3C422F0DC5B300E3624B /* TravelerBuddy */,
 				4D2D3C412F0DC5B300E3624B /* Products */,
 			);
@@ -132,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D2D3D432F0F0F7200E3624B /* README.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
